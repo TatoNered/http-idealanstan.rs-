@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="sr-RS">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="SEO audit sajta idealanstan.rs — tehnicki problemi, lokalna vidljivost, predlog strukture i plan rada.">
+<title>Idealan Stan — SEO audit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single-column document, 68ch prose measure, full-width data tables that scroll in place */
+:root{
+  --paper:#f4f6f7;
+  --surface:#ffffff;
+  --ink:#16222c;
+  --ink-soft:#54646f;
+  --line:#d6dde1;
+  --accent:#1a4f72;
+  --accent-soft:#e7eef3;
+  --sand:#b07d2b;
+  --crit:#a4331f;
+  --warn:#9a6a10;
+  --ok:#1f6b46;
+  --crit-bg:#f8e9e5;
+  --warn-bg:#f8f0dd;
+  --ok-bg:#e4f1ea;
+  --display:"Bitter",Georgia,"Times New Roman",serif;
+  --body:"Source Sans 3","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#11181d;
+    --surface:#172127;
+    --ink:#e6edf1;
+    --ink-soft:#9fb1bc;
+    --line:#2a3842;
+    --accent:#6aa9cf;
+    --accent-soft:#1b2a35;
+    --sand:#d8a84f;
+    --crit:#f08a74;
+    --warn:#dfb152;
+    --ok:#6fc396;
+    --crit-bg:#2e1b17;
+    --warn-bg:#2d2415;
+    --ok-bg:#15291f;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11181d;
+  --surface:#172127;
+  --ink:#e6edf1;
+  --ink-soft:#9fb1bc;
+  --line:#2a3842;
+  --accent:#6aa9cf;
+  --accent-soft:#1b2a35;
+  --sand:#d8a84f;
+  --crit:#f08a74;
+  --warn:#dfb152;
+  --ok:#6fc396;
+  --crit-bg:#2e1b17;
+  --warn-bg:#2d2415;
+  --ok-bg:#15291f;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16.5px;
+  line-height:1.62;
+  margin:0;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{
+  max-width:60rem;
+  margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 4rem;
+}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;line-height:1.22;margin:0}
+h1{font-size:clamp(1.9rem,5vw,2.9rem);font-weight:700;letter-spacing:-.015em}
+h2{font-size:clamp(1.4rem,3.4vw,1.85rem);font-weight:700}
+h3{font-size:1.12rem;font-weight:600}
+h4{font-size:1rem;font-weight:600}
+p,ul,ol{margin:0}
+.prose{max-width:68ch}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:2px}
+
+/* masthead */
+header.mast{border-bottom:3px solid var(--ink);padding-block:2.6rem 1.4rem;display:flex;flex-direction:column;gap:1.1rem}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.mast-meta{display:flex;flex-wrap:wrap;gap:.4rem 1.6rem;font-size:.86rem;color:var(--ink-soft);font-family:var(--mono)}
+.mast-sub{font-size:1.06rem;color:var(--ink-soft);max-width:60ch}
+
+/* sections */
+section{padding-block:2.6rem;border-bottom:1px solid var(--line)}
+.sec-head{display:flex;align-items:baseline;gap:.8rem;margin-bottom:1.1rem}
+.sec-num{font-family:var(--mono);font-size:.82rem;color:var(--sand);padding-top:.35rem;flex:none}
+.stack{display:flex;flex-direction:column;gap:1rem}
+.stack-tight{display:flex;flex-direction:column;gap:.55rem}
+ul.bul{padding-left:1.15rem;display:flex;flex-direction:column;gap:.45rem}
+ul.bul li::marker{color:var(--sand)}
+ol.num{padding-left:1.3rem;display:flex;flex-direction:column;gap:.5rem}
+
+/* key figures */
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-block:.4rem}
+.fig{background:var(--surface);padding:.95rem 1rem;min-width:0}
+.fig b{display:block;font-family:var(--display);font-size:1.75rem;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.fig span{display:block;font-size:.82rem;color:var(--ink-soft);margin-top:.25rem}
+
+/* findings */
+.find{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.5rem;min-width:0}
+.find.c1{border-left-color:var(--crit)}
+.find.c2{border-left-color:var(--warn)}
+.find.c3{border-left-color:var(--accent)}
+.find-top{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem}
+.sev{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:.16rem .45rem;border-radius:2px;white-space:nowrap}
+.sev.s1{background:var(--crit-bg);color:var(--crit)}
+.sev.s2{background:var(--warn-bg);color:var(--warn)}
+.sev.s3{background:var(--accent-soft);color:var(--accent)}
+.find h3{flex:1 1 14rem;min-width:0}
+.fix{font-size:.95rem;border-top:1px dashed var(--line);padding-top:.5rem}
+.fix b{font-family:var(--mono);font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:.15rem}
+code{font-family:var(--mono);font-size:.86em;background:var(--accent-soft);padding:.08em .32em;border-radius:2px;word-break:break-word}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:34rem}
+th,td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);background:var(--paper);position:sticky;top:0}
+tbody tr:last-child td{border-bottom:none}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.bad{color:var(--crit);font-weight:600}
+.good{color:var(--ok);font-weight:600}
+.mid{color:var(--warn);font-weight:600}
+.u{font-family:var(--mono);font-size:.82rem;word-break:break-all}
+
+/* callout */
+.note{background:var(--accent-soft);border:1px solid var(--line);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.5rem}
+.note .eyebrow{color:var(--accent)}
+.hard{background:var(--surface);border:1px solid var(--ink);padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.6rem}
+
+/* phases */
+.phase{background:var(--surface);border:1px solid var(--line);padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.7rem;min-width:0}
+.phase-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem 1rem;border-bottom:1px solid var(--line);padding-bottom:.55rem}
+.phase-top h3{flex:1 1 12rem}
+.when{font-family:var(--mono);font-size:.78rem;color:var(--sand);white-space:nowrap}
+
+/* price */
+.price{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1.2rem;align-items:start}
+.price-main{background:var(--surface);border:2px solid var(--ink);padding:1.3rem;display:flex;flex-direction:column;gap:.8rem;min-width:0}
+.amount{font-family:var(--display);font-size:2.6rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.amount small{font-family:var(--body);font-size:.95rem;font-weight:400;color:var(--ink-soft)}
+.team{display:flex;flex-direction:column;gap:.5rem}
+.team div{display:flex;gap:.6rem;align-items:baseline;font-size:.95rem}
+.team span{font-family:var(--mono);font-size:.72rem;color:var(--sand);flex:none;width:1.4rem}
+
+footer{padding-block:2.2rem;color:var(--ink-soft);font-size:.86rem;display:flex;flex-direction:column;gap:.5rem}
+@media print{
+  body{background:#fff;font-size:11pt}
+  section{break-inside:avoid}
+  .tw{overflow:visible}
+}
+</style>
+<style>
+html,body{margin:0}
+img{max-width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <div class="eyebrow">SEO audit · oktobar 2026</div>
+  <h1>idealanstan.rs</h1>
+  <p class="mast-sub">Šta sajt agencije IDEALAN STAN doo danas radi u pretrazi, zašto ga kupci ne nalaze i šta konkretno treba promeniti u prvih šest meseci.</p>
+  <div class="mast-meta">
+    <span>Analizirano: 8 HTML strana + 3 statičke 3D ture</span>
+    <span>Alati: Parsi, Screaming Frog, Google Business, pretraga</span>
+  </div>
+</header>
+
+<section>
+  <div class="sec-head"><div class="sec-num">01</div><h2>Rezime u pet rečenica</h2></div>
+  <div class="stack prose">
+    <p>Sajt nije kažnjen i nije pokvaren — on je nedovršen i zamrznut u 2018. godini. Celokupna ponuda agencije na sajtu su <strong>dva oglasa od 5. aprila 2018.</strong>, oba za nekretnine u Takovskoj na Paliluli, dok je kancelarija na Novom Beogradu.</p>
+    <p>Meni sajta nije meni: <em>O nama</em>, <em>Usluge</em>, <em>Galerija</em> i <em>Kontakt</em> su kotve na početnoj strani (<code>#vise</code>, <code>#usluge</code>, <code>#galerija</code>, <code>#kontakt</code>), pa osim početne ne postoji nijedna strana koja bi mogla da se rangira za bilo koju uslugu.</p>
+    <p>Tehnički, sajt postoji u dve verzije istovremeno — <code>http://</code> i <code>https://</code> obe vraćaju kod 200 i obe se same proglašavaju kanonskim. Google tako vidi dva sajta sa istim sadržajem, a svi linkovi u meniju vode na nesigurnu <code>http</code> verziju.</p>
+    <p>Google Business profil postoji, ali ima <strong>3 recenzije i ocenu 3,7</strong>, dok agencije u krugu od dva kilometra imaju 34, 48, 82, 206, 374 i 996 recenzija. U lokalnoj pretrazi to je najveći pojedinačni razlog zašto se profil ne pojavljuje.</p>
+    <p>Dobra vest: tržište je aktivno (u prvoj polovini 2026. u Beogradu je prodato 8.538 stanova, prosečan kvadrat 3.219 €), server je brz, tema je ažurna, a konkurencija među <em>agencijskim sajtovima</em> je slaba — svi gube od agregatora. Prostor postoji, samo na njemu još ništa nije izgrađeno.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">02</div><h2>Sajt u brojevima</h2></div>
+  <div class="stack">
+    <div class="figs">
+      <div class="fig"><b>8</b><span>strana u celom sajtu</span></div>
+      <div class="fig"><b>62</b><span>zabeležene greške</span></div>
+      <div class="fig"><b>0</b><span>strana sa meta description</span></div>
+      <div class="fig"><b>2</b><span>oglasa, oba iz 2018.</span></div>
+      <div class="fig"><b>5/8</b><span>strana bez H1 naslova</span></div>
+      <div class="fig"><b>183</b><span>reči teksta na početnoj</span></div>
+      <div class="fig"><b>2,6&nbsp;MB</b><span>nekompresovanih slika</span></div>
+      <div class="fig"><b>3</b><span>recenzije na Google profilu</span></div>
+    </div>
+    <p class="prose">Za poređenje: strana koja ozbiljno konkuriše za jedan komercijalni upit u ovoj niši ima 700–1.500 reči sopstvenog teksta, svoj naslov, svoj opis i svoju strukturu. Ovde takvih strana nema nijedna.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">03</div><h2>Problemi, po prioritetu</h2></div>
+  <div class="stack">
+
+    <div class="find c1">
+      <div class="find-top"><span class="sev s1">kritično</span><h3>Sajt postoji dvaput: http i https</h3></div>
+      <p><code>http://idealanstan.rs/</code> i <code>https://idealanstan.rs/</code> obe vraćaju 200, bez preusmerenja, i svaka ima kanonski tag na samu sebe. Isto važi za sve unutrašnje strane. Sav meni na sajtu linkuje na <code>http</code> verziju, pa i Google i posetioci stalno završavaju na nesigurnoj kopiji. Signali koji bi trebalo da se slivaju u jednu stranu dele se na dve.</p>
+      <div class="fix"><b>Rešenje</b>301 preusmerenje sa <code>http</code> na <code>https</code> (i sa <code>www</code> na verziju bez <code>www</code>, ili obrnuto — bitno je da se izabere jedna), kanonski tagovi na izabranu verziju, svi linkovi u meniju i u tekstu na relativne putanje, HSTS zaglavlje.</div>
+    </div>
+
+    <div class="find c1">
+      <div class="find-top"><span class="sev s1">kritično</span><h3>Nema strana za usluge — meni su kotve na početnoj</h3></div>
+      <p>Celo navođenje sajta su <code>#vise</code>, <code>#usluge</code>, <code>#galerija</code> i <code>#kontakt</code> — delovi jedne strane. Agencija nudi prodaju, izdavanje, posredovanje pri kupovini i poslovne prostore, a nijedna od tih usluga nema svoju adresu na internetu. Kada neko traži „izdavanje stanova Novi Beograd”, Google nema šta da prikaže sa ovog sajta.</p>
+      <div class="fix"><b>Rešenje</b>Zasebna strana za svaku uslugu, sa sopstvenim naslovom, opisom, tekstom i obrascem. Ovo je najveći pojedinačni izvor rasta i ulazi u drugu fazu rada.</div>
+    </div>
+
+    <div class="find c1">
+      <div class="find-top"><span class="sev s1">kritično</span><h3>Ponuda nije na sajtu</h3></div>
+      <p>Dva oglasa, oba objavljena 5. aprila 2018, oba u Takovskoj (Palilula). Stvarna ponuda agencije živi na agregatorima. Zbog toga sajt ne dobija ni jedan jedini upit tipa „dvosoban stan Blok 70” i nema šta da osvežava — a svežina ponude je ono što Google u ovoj niši najdirektnije nagrađuje.</p>
+      <div class="fix"><b>Rešenje</b>Nekretnine kao zaseban tip sadržaja u WordPressu, sa listingom i filterima, trajnim URL-ovima tipa <code>/nekretnine/dvosoban-blok-70-id-1042/</code> i <code>RealEstateListing</code> šemom. Oglasi i dalje idu na agregatore, ali sajt postaje izvor, a ne arhiva.</div>
+    </div>
+
+    <div class="find c2">
+      <div class="find-top"><span class="sev s2">visoko</span><h3>Nijedna strana nema meta description</h3></div>
+      <p>Svih 8 strana bez opisa. Google tada sam izvlači tekst iz strane — a na stranama 3D tura ima samo 19 reči, pa u rezultatu pretrage ne piše ništa korisno. Opis ne utiče na poziciju, ali direktno utiče na to koliko ljudi klikne.</p>
+      <div class="fix"><b>Rešenje</b>Ručno napisan opis za svaku stranu, 140–160 znakova, sa lokacijom i pozivom na akciju.</div>
+    </div>
+
+    <div class="find c2">
+      <div class="find-top"><span class="sev s2">visoko</span><h3>Naslovi: tri prazna, tri predugačka, tri identična</h3></div>
+      <p>Strane <code>/tour/</code>, <code>/tour2/</code> i <code>/tour3/</code> imaju naslov koji počinje crtom — <em>„| Idealan Stan nekretnine | Novi Beograd”</em> — jer je polje naslova prazno; sve tri su međusobno identične. Oglasi imaju 106 i 115 znakova, a Google prikazuje oko 60. Početna ima 63 znaka i troši ih na ponavljanje imena.</p>
+      <div class="fix"><b>Rešenje</b>Jedan jedinstven naslov po strani, 50–60 znakova, obrazac <em>Usluga + lokacija + brend</em>. Za 3D ture: <em>„3D obilazak stana u Bloku 70 — Idealan Stan”</em>.</div>
+    </div>
+
+    <div class="find c2">
+      <div class="find-top"><span class="sev s2">visoko</span><h3>Dve strane sa istim tekstom i bez kanonskog taga</h3></div>
+      <p><code>/category/nekretnine-prodaja/</code> i <code>/author/uros/</code> imaju doslovno isti sadržaj (oba su spiska istih dva oglasa), nijedna nema kanonski tag, a autorska arhiva ima 6 unutrašnjih linkova — dakle sajt je sam gura u indeks. Autorske arhive na sajtu agencije ne nose nikakvu vrednost za kupca.</p>
+      <div class="fix"><b>Rešenje</b><code>noindex</code> za autorske arhive, kanonski tag na kategorijsku stranu, uklanjanje linkova „Uroš Vasić” iz podnožja oglasa.</div>
+    </div>
+
+    <div class="find c2">
+      <div class="find-top"><span class="sev s2">visoko</span><h3>Šest URL-ova za tri 3D ture</h3></div>
+      <p>Postoje WordPress strane <code>/tour/</code>, <code>/tour2/</code>, <code>/tour3/</code> i, nezavisno od njih, statički folderi <code>/3dtour/</code>, <code>/3dtour2/</code>, <code>/3dtour3/</code> sa sopstvenim naslovima („001 panorama, Nikols”, „002 Idealan stan”, „003 Idealan Stan”) i opisom „Virtual Tour”. Varijante bez kose crte dodatno prave 301 lanac. Tri ture, šest adresa, nula objašnjenja čiji su to stanovi.</p>
+      <div class="fix"><b>Rešenje</b>Jedna strana <code>/3d-obilasci/</code> kao pregled, pojedinačne ture ugrađene u strane oglasa kojima pripadaju, ostalo 301 na njih. Ture su stvarna prednost nad konkurencijom i trenutno su skrivene.</div>
+    </div>
+
+    <div class="find c2">
+      <div class="find-top"><span class="sev s2">visoko</span><h3>Mixed content na svim stranama</h3></div>
+      <p>Na svakoj https strani od 2 do 12 resursa se učitava preko <code>http://</code> — slike, skriptovi, logo izrađivača sajta. Pregledači to blokiraju ili prikazuju upozorenje o nesigurnoj strani. Kupac koji na adresi vidi upozorenje ne ostavlja broj telefona.</p>
+      <div class="fix"><b>Rešenje</b>Zamena svih <code>http</code> putanja u bazi (search–replace), protokolarno nezavisne putanje u temi, provera nakon prelaza.</div>
+    </div>
+
+    <div class="find c2">
+      <div class="find-top"><span class="sev s2">visoko</span><h3>Jezik sajta je prijavljen kao engleski</h3></div>
+      <p>Sve WordPress strane imaju <code>lang="en-US"</code>, a 3D ture <code>lang="en"</code>, dok je sadržaj na srpskom. Ovo zbunjuje i pretraživače i čitače za osobe sa oštećenim vidom.</p>
+      <div class="fix"><b>Rešenje</b><code>lang="sr-RS"</code> u podešavanjima WordPressa i u šablonu tura.</div>
+    </div>
+
+    <div class="find c2">
+      <div class="find-top"><span class="sev s2">visoko</span><h3>Sajt ne govori gde je agencija</h3></div>
+      <p>Na sajtu nema adrese, nema mape, nema radnog vremena, nema podataka o firmi, nema recenzija, nema Vibera ni WhatsAppa. Telefon i mejl postoje — i to je sve. Za lokalni posao to su osnovni signali poverenja koje i Google i kupac traže.</p>
+      <div class="fix"><b>Rešenje</b>NAP blok (ime, adresa Jurija Gagarina 151a, telefon) identičan onom na Google profilu, ugrađena mapa, radno vreme, PIB i matični broj, dokaz o upisu u Registar posrednika, Viber/WhatsApp dugme.</div>
+    </div>
+
+    <div class="find c3">
+      <div class="find-top"><span class="sev s3">srednje</span><h3>Nema schema.org ni Open Graph oznaka</h3></div>
+      <p>Nijedna strana nema strukturirane podatke ni oznake za deljenje. Kada se link pošalje na Viber ili Facebook, nema ni slike ni opisa. Google ne razume da je u pitanju agencija za nekretnine sa konkretnom adresom.</p>
+      <div class="fix"><b>Rešenje</b><code>RealEstateAgency</code> šema sa adresom, radnim vremenom i ocenom, <code>RealEstateListing</code> na oglasima, <code>BreadcrumbList</code>, <code>FAQPage</code> na stranama usluga, plus OG naslov/opis/slika svuda.</div>
+    </div>
+
+    <div class="find c3">
+      <div class="find-top"><span class="sev s3">srednje</span><h3>Slike od 2,6 MB iz marta 2018</h3></div>
+      <p>Najteže su <code>jpg1.png</code> i <code>1518783747232-1083713299.png</code> po 501 KB, <code>jpg2.png</code> 336 KB. Umanjena verzija širine 400 px teži 229 KB — što znači da je PNG upotrebljen za fotografije. Od 9 slika na početnoj, 8 je bez <code>alt</code> opisa.</p>
+      <div class="fix"><b>Rešenje</b>Prelaz na WebP, kompresija, ispravne dimenzije, lazy load, <code>alt</code> tekst koji opisuje šta je na slici. Očekivano: sa 2,6 MB na oko 300 KB.</div>
+    </div>
+
+    <div class="find c3">
+      <div class="find-top"><span class="sev s3">srednje</span><h3>Tanak sadržaj na svakoj strani</h3></div>
+      <p>Sopstveni tekst: početna 183 reči, oglasi 102 i 81, autorska arhiva 111, strane tura 19. Ostatak je šablon, meni i podnožje. Nema o čemu da se rangira.</p>
+      <div class="fix"><b>Rešenje</b>Ulazi u drugu fazu zajedno sa novom strukturom — nema smisla dopisivati tekst na strane koje će se menjati.</div>
+    </div>
+
+    <div class="find c3">
+      <div class="find-top"><span class="sev s3">srednje</span><h3>Sitnice koje se rešavaju u jednom danu</h3></div>
+      <ul class="bul">
+        <li>Datum u adresi oglasa: <code>/2018/04/05/...</code> — svaki oglas na prvi pogled izgleda star osam godina. Prelaz na <code>/nekretnine/{naziv}/</code> sa 301 preusmerenjem.</li>
+        <li>Nema bezbednosnih zaglavlja (HSTS, CSP, X-Frame-Options, X-Content-Type-Options).</li>
+        <li>Server radi na HTTP/1.1; HTTP/2 je besplatno ubrzanje kod većine hostinga.</li>
+        <li>Sitan link na izrađivača sajta kroz sve strane, preko <code>http</code>, plus GIF logo iz 2018.</li>
+        <li>Komentari su otvoreni na oglasima („0 comments”) — za agenciju samo prostor za spam.</li>
+        <li>Nema Google Search Console-a i nema analitike, pa se ništa ne može meriti.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">04</div><h2>Strana po strani</h2></div>
+  <div class="stack">
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Strana</th><th>Naslov</th><th>Opis</th><th>H1</th><th>Reči</th><th>Slike bez alt</th><th>Glavni problem</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="u">/</td><td class="num mid">63 zn.</td><td class="bad">nema</td><td class="good">ima</td><td class="num">183</td><td class="num">8 / 9</td><td>Nosi ceo sajt sama; kotve umesto strana</td></tr>
+          <tr><td class="u">/category/nekretnine-prodaja/</td><td class="num good">59 zn.</td><td class="bad">nema</td><td class="bad">nema</td><td class="num">161</td><td class="num">1 / 2</td><td>Isti tekst kao autorska arhiva, bez kanonskog taga</td></tr>
+          <tr><td class="u">/author/uros/</td><td class="num good">51 zn.</td><td class="bad">nema</td><td class="bad">nema</td><td class="num">111</td><td class="num">1 / 2</td><td>Treba <code>noindex</code> — nema vrednost za kupca</td></tr>
+          <tr><td class="u">/2018/04/05/salonski-stan-…</td><td class="num bad">106 zn.</td><td class="bad">nema</td><td class="good">ima</td><td class="num">81</td><td class="num">11 / 12</td><td>Oglas od aprila 2018, datum u adresi</td></tr>
+          <tr><td class="u">/2018/04/05/takovska-poslovni-…</td><td class="num bad">115 zn.</td><td class="bad">nema</td><td class="good">ima</td><td class="num">102</td><td class="num">7 / 8</td><td>Oglas od aprila 2018, datum u adresi</td></tr>
+          <tr><td class="u">/tour/</td><td class="num bad">prazan</td><td class="bad">nema</td><td class="bad">nema</td><td class="num">19</td><td class="num">1 / 2</td><td>Naslov počinje crtom, identičan sa tour2 i tour3</td></tr>
+          <tr><td class="u">/tour2/</td><td class="num bad">prazan</td><td class="bad">nema</td><td class="bad">nema</td><td class="num">19</td><td class="num">1 / 2</td><td>Duplikat</td></tr>
+          <tr><td class="u">/tour3/</td><td class="num bad">prazan</td><td class="bad">nema</td><td class="bad">nema</td><td class="num">19</td><td class="num">1 / 2</td><td>Duplikat</td></tr>
+          <tr><td class="u">/3dtour/ · /3dtour2/ · /3dtour3/</td><td class="num mid">„001 panorama, Nikols”</td><td class="mid">„Virtual Tour”</td><td class="bad">nema</td><td class="num">5</td><td class="num">—</td><td>Statičke ture izvan WordPressa, dupliraju /tour*/</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prose">Svih 8 WordPress strana nalazi se u sitemap fajlu i indeksira se — dakle Google ih vidi. Problem nije u pristupu, problem je u tome da nema šta da se pročita.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">05</div><h2>Lokalna pretraga: najveći razlaz</h2></div>
+  <div class="stack">
+    <p class="prose">Google profil postoji — <em>IDEALAN STAN Agencija za nekretnine</em>, Jurija Gagarina 151a, kanc. 142. Ocena je 3,7 na osnovu tri recenzije, od kojih je jedna detaljan negativan opis saradnje sa agentom. Radno vreme je prijavljeno kao „otvoreno 0–24, sedam dana u nedelji”, što kupac čita kao profil o kome se niko ne stara.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Agencija</th><th>Ocena</th><th>Recenzije</th><th>Lokacija</th></tr></thead>
+        <tbody>
+          <tr><td><strong>IDEALAN STAN</strong></td><td class="num bad">3,7</td><td class="num bad">3</td><td>Jurija Gagarina 151a</td></tr>
+          <tr><td>Beostan</td><td class="num">4,4</td><td class="num">996</td><td>Gandijeva 192</td></tr>
+          <tr><td>Europolis nekretnine</td><td class="num">4,6</td><td class="num">374</td><td>Mihajla Pupina 165a</td></tr>
+          <tr><td>ZIDART nekretnine</td><td class="num">4,1</td><td class="num">206</td><td>Džona Kenedija 18</td></tr>
+          <tr><td>Eminent nekretnine</td><td class="num">4,3</td><td class="num">109</td><td>Uroša Martinovića 13</td></tr>
+          <tr><td>Predrag Nekretnine</td><td class="num">4,9</td><td class="num">82</td><td>Milutina Milankovića 1i</td></tr>
+          <tr><td>Tukodi Nekretnine</td><td class="num">4,9</td><td class="num">48</td><td>Zorana Đinđića 45v</td></tr>
+          <tr><td>LUX HOME BEOGRAD</td><td class="num">4,8</td><td class="num">37</td><td>Jurija Gagarina 14</td></tr>
+          <tr><td>SQUARE BG NEKRETNINE</td><td class="num">4,9</td><td class="num">34</td><td>Mihajla Pupina 10ž</td></tr>
+          <tr><td>Eurostan Novi Beograd</td><td class="num">5,0</td><td class="num">11</td><td>Antifašističke borbe 23e</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <div class="eyebrow">Zašto je ovo prvo na listi</div>
+      <p>Za upit „agencija za nekretnine Novi Beograd” Google prvo prikazuje mapu sa tri profila. Ulazak u ta tri mesta zavisi od blizine, popunjenosti profila i recenzija. Blizina je data, popunjenost se reši u jednom danu, a recenzije su jedino što traje. Tri recenzije prema 34 ili 82 kod suseda je razlika koju nijedna izmena na sajtu ne može da nadoknadi.</p>
+      <p>Konkretno: kategorija <em>Real estate agency</em> (sada je profil bez prave kategorije), realno radno vreme, 15–20 fotografija kancelarije i tima, opis sa uslugama, odgovor na postojeću negativnu recenziju, i zatim <strong>sistematsko traženje recenzije od svakog klijenta nakon zaključenog posla</strong> — poruka sa direktnim linkom, isti dan. Cilj: 25–30 recenzija u šest meseci.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">06</div><h2>Šta je realno, a šta nije</h2></div>
+  <div class="stack">
+    <p class="prose">Ovo je deo koji obično nedostaje u ponudama, pa ga stavljamo odmah. Prva strana rezultata za široke upite tipa „prodaja stanova Beograd” i „stanovi Novi Beograd” pripada agregatorima: <strong>halooglasi.com, nekretnine.rs, 4zida.rs, planplus.rs</strong>. Oni imaju desetine hiljada strana, dnevno nove oglase i domen od dvadeset godina. Nijedan sajt agencije u Beogradu ih tamo ne pobeđuje i mi ne nameravamo da obećavamo da ćemo biti prvi koji će.</p>
+    <div class="hard">
+      <h3>Teritorija koja se može osvojiti</h3>
+      <ul class="bul">
+        <li><strong>Lokalni paket na mapi</strong> — tri profila uz upite sa nazivom opštine ili naselja. Ovde se odlučuje najveći deo poziva.</li>
+        <li><strong>Upiti na nivou bloka i naselja</strong> — „stanovi Blok 70”, „izdavanje Belvil”, „stan Dr Ivana Ribara”. Agregatori imaju te strane, ali slabo i bez lokalnog znanja.</li>
+        <li><strong>Upiti o postupku</strong> — provizija agencije, porez na prenos, ugovor o posredovanju, uknjižba, provera lista nepokretnosti. Agregatori ih pokrivaju opšte; agencija može konkretno i tačno.</li>
+        <li><strong>Procena vrednosti stana</strong> — upit koji dolazi od prodavca, dakle od klijenta koji agenciji donosi ponudu, a ne samo proviziju od kupca.</li>
+        <li><strong>Strani kupci i zakupci</strong> — o ovome u sledećem delu.</li>
+        <li><strong>Brend</strong> — „idealan stan agencija”, „idealan stan nekretnine”. Trenutno se sajt ne pojavljuje ni za ovo pouzdano.</li>
+      </ul>
+    </div>
+    <p class="prose">Drugim rečima: cilj nije prva pozicija za najskuplju frazu u Srbiji, nego trideset do četrdeset strana koje svaka donosi po nekoliko upita mesečno, plus profil na mapi koji zvoni.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">07</div><h2>Šansa koju konkurencija ne pokriva</h2></div>
+  <div class="stack prose">
+    <p>Novi Beograd je deo grada u kome strani kupci i zakupci čine veliki deo tražnje. To se vidi i u recenzijama konkurenata: pišu ih na engleskom, poneki na ruskom, a jedna agencija u susedstvu izričito u opisu navodi da ima agente koji govore ruski i engleski — i ima ocenu 5,0.</p>
+    <p>Sajt idealanstan.rs je samo na srpskom, bez <code>hreflang</code> oznaka, i prijavljuje se kao engleski sajt iako nije. Nijedan od pet najbližih konkurenata ne ima uređenu englesku, a kamoli rusku verziju sajta sa pravim prevodom — svi se oslanjaju na agente koji odgovore na telefon.</p>
+    <p>Engleska i ruska verzija osam ključnih strana (usluge, postupak kupovine za stranca, dokumenti, provizija, kontakt) je mali posao sa nesrazmerno malom konkurencijom. Upiti tipa <em>„buying apartment in Belgrade as a foreigner”</em> i <em>„квартира Нови Белград купить”</em> imaju stabilan obim i gotovo nikakvu lokalnu ponudu na nivou agencijskih sajtova.</p>
+    <p>Druga nepokrivena stvar: <strong>3D ture</strong>. Agencija ih već ima tri i tehnički rade. Konkurenti u okruženju ih nemaju, a kupcu koji dolazi iz drugog grada ili iz inostranstva one su presudne. Sada su skrivene na stranama bez naslova. Ture + engleska verzija + strane po blokovima su kombinacija koja ovaj sajt izdvaja, a nijedna ne zahteva veliki budžet.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">08</div><h2>Predlog strukture sajta</h2></div>
+  <div class="stack">
+    <p class="prose">Sa 8 na oko 40 strana u šest meseci, u šest grupa. Nije reč o pisanju teksta radi teksta — svaka strana odgovara na jedan konkretan upit sa kojim ljudi dolaze.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Grupa</th><th>Strane</th><th>Čemu služi</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Usluge</strong><br><span class="u">6 strana</span></td>
+            <td>Prodaja stana · Izdavanje stana · Zastupanje kupca · Poslovni prostori i lokali · Procena tržišne vrednosti · Pravna podrška u kupoprodaji</td>
+            <td>Komercijalni upiti; svaka strana ima svoj obrazac i svoj telefon</td>
+          </tr>
+          <tr>
+            <td><strong>Ponuda</strong><br><span class="u">3 + oglasi</span></td>
+            <td><code>/stanovi-prodaja/</code> · <code>/stanovi-izdavanje/</code> · <code>/poslovni-prostori/</code> sa filterima, pojedinačni oglasi na trajnim adresama</td>
+            <td>Sajt postaje izvor ponude, a ne arhiva iz 2018.</td>
+          </tr>
+          <tr>
+            <td><strong>Lokacije</strong><br><span class="u">10–12 strana</span></td>
+            <td>Blok 70 · Belvil · Mladost · Bežanijski blokovi · A Blok · Dr Ivana Ribara · Savada · Studentski grad · Blok 45 · Fontana · Zemun · Surčin</td>
+            <td>Upiti na nivou naselja, uz lokalno znanje koje agregatori ne mogu da napišu</td>
+          </tr>
+          <tr>
+            <td><strong>Poverenje</strong><br><span class="u">6 strana</span></td>
+            <td>O nama · Tim i agenti · Upis u Registar posrednika · Provizija i šta ulazi u nju · Dokumenti za kupoprodaju · Recenzije klijenata</td>
+            <td>Signali koje Google traži od lokalnog posla i koje kupac traži pre poziva</td>
+          </tr>
+          <tr>
+            <td><strong>Vodiči</strong><br><span class="u">10 strana</span></td>
+            <td>Kupovina na kredit · Porez na prenos apsolutnih prava · Ugovor o posredovanju · Kako proveriti list nepokretnosti · Novogradnja ili starogradnja · Uknjižba · Kupovina stana kao stranac u Srbiji · Troškovi kupoprodaje · Kako pripremiti stan za prodaju · Izdavanje — prava i obaveze</td>
+            <td>Upiti o postupku; dovode ljude mesecima pre nego što budu spremni da kupe</td>
+          </tr>
+          <tr>
+            <td><strong>EN / RU</strong><br><span class="u">8 + 8 strana</span></td>
+            <td>Prevod usluga, postupka za strance, dokumenata, provizije i kontakta, sa <code>hreflang</code> oznakama</td>
+            <td>Tražnja na Novom Beogradu koju konkurenti ne pokrivaju</td>
+          </tr>
+          <tr>
+            <td><strong>3D obilasci</strong><br><span class="u">1 + ture</span></td>
+            <td>Pregledna strana, ture ugrađene u odgovarajuće oglase, stare adrese 301 na nove</td>
+            <td>Postojeća prednost koja se trenutno ne koristi</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">09</div><h2>Plan rada</h2></div>
+  <div class="stack">
+
+    <div class="phase">
+      <div class="phase-top"><h3>Faza 1 — tehnička osnova i Google profil</h3><span class="when">1. mesec</span></div>
+      <ol class="num">
+        <li>Jedan kanonski domen: 301 sa <code>http</code> na <code>https</code>, izbor između <code>www</code> i bez, HSTS, ispravka svih kanonskih tagova.</li>
+        <li>Uklanjanje mixed content-a iz baze i iz teme; svi unutrašnji linkovi na relativne putanje.</li>
+        <li><code>lang="sr-RS"</code>; naslov i opis napisani ručno za svih 8 strana; H1 na stranama gde ga nema.</li>
+        <li>Čišćenje duplikata: <code>noindex</code> na autorsku arhivu, kanonski tag na kategoriju, spajanje tura, 301 lanci skraćeni.</li>
+        <li>Slike: WebP, kompresija, ispravne dimenzije, lazy load, <code>alt</code> opisi. Sa 2,6 MB na oko 300 KB.</li>
+        <li><code>RealEstateAgency</code> šema, Open Graph oznake, <code>robots.txt</code> i sitemap pregledani.</li>
+        <li>Na sajt: adresa, mapa, radno vreme, PIB i matični broj, dokaz o upisu u registar, Viber/WhatsApp.</li>
+        <li>Google Search Console i GA4 postavljeni — bez njih se naredni meseci ne mogu meriti.</li>
+        <li>Google profil: kategorija, radno vreme, 15–20 fotografija, opis, odgovor na postojeću recenziju, postavljen postupak za traženje novih.</li>
+      </ol>
+      <p><em>Rezultat prvog meseca:</em> sajt prestaje da sabotira sam sebe i profil na mapi počinje da se pojavljuje. Upiti još ne rastu ozbiljno — nema strana koje bi ih primile.</p>
+    </div>
+
+    <div class="phase">
+      <div class="phase-top"><h3>Faza 2 — strukture i sadržaj</h3><span class="when">2–4. mesec</span></div>
+      <ol class="num">
+        <li>Nekretnine kao zaseban tip sadržaja: listing, filteri, trajni URL-ovi, <code>RealEstateListing</code> šema, prenos aktuelne ponude na sajt.</li>
+        <li>Šest strana usluga, napisanih do kraja, sa obrascem i pozivom na akciju na svakoj.</li>
+        <li>Šest strana poverenja, uključujući proviziju objašnjenu bez izbegavanja — to je upit koji ljudi najčešće traže pre poziva.</li>
+        <li>Prvih šest lokacijskih strana (Blok 70, Belvil, Mladost, Bežanijski blokovi, Dr Ivana Ribara, A Blok).</li>
+        <li>Četiri vodiča sa najjasnijom tražnjom.</li>
+        <li>Unutrašnje povezivanje: usluge ↔ lokacije ↔ oglasi ↔ vodiči; novi meni koji vodi na strane, a ne na kotve.</li>
+        <li><code>BreadcrumbList</code> i <code>FAQPage</code> šeme; mesečni izveštaj iz Search Console-a.</li>
+      </ol>
+      <p><em>Rezultat:</em> prvi upiti sa dugog repa počinju da pristižu, obično od drugog ili trećeg meseca posle objave strane.</p>
+    </div>
+
+    <div class="phase">
+      <div class="phase-top"><h3>Faza 3 — rast i strani kupci</h3><span class="when">4–6. mesec</span></div>
+      <ol class="num">
+        <li>Preostalih šest lokacijskih strana i šest vodiča.</li>
+        <li>Engleska i ruska verzija osam ključnih strana sa <code>hreflang</code> oznakama.</li>
+        <li>Strana 3D obilazaka i ture ugrađene u oglase.</li>
+        <li>Lokalni citati: nekretnine.rs, halooglasi, 4zida, planplus.rs, 011info, Apple Maps, Bing Places — svuda isti podaci kao na Google profilu.</li>
+        <li>Nastavak rada na recenzijama; cilj 25–30 do kraja šestog meseca.</li>
+        <li>Rad na konverziji: obrazac za procenu vrednosti, poziv jednim klikom, WhatsApp, vidljiv telefon na svakoj strani.</li>
+        <li>Linkovi iz lokalnih izvora — portali o nekretninama, lokalni mediji, poslovni direktoriji.</li>
+      </ol>
+      <p><em>Rezultat:</em> sajt radi kao kanal, a ne kao vizitkarta; mapa i organska pretraga počinju da daju pozive nezavisno jedna od druge.</p>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">10</div><h2>Očekivanja i merenje</h2></div>
+  <div class="stack">
+    <p class="prose">Polazna tačka je nula — nema Search Console podataka, nema analitike, sajt se ne pojavljuje ni za sopstveni brend pouzdano. Zbog toga su ovo opsezi, a ne obećanja. Mere se iz Search Console-a i Google profila, i izveštavaju se svakog meseca.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Pokazatelj</th><th>Sada</th><th>3. mesec</th><th>6. mesec</th><th>12. mesec</th></tr></thead>
+        <tbody>
+          <tr><td>Strana u indeksu</td><td class="num">8</td><td class="num">22–26</td><td class="num">38–45</td><td class="num">50–60</td></tr>
+          <tr><td>Upiti sa prikazima u pretrazi</td><td class="num">0</td><td class="num">120–250</td><td class="num">400–700</td><td class="num">900–1.500</td></tr>
+          <tr><td>Klikovi iz pretrage, mesečno</td><td class="num">~0</td><td class="num">40–90</td><td class="num">150–300</td><td class="num">400–700</td></tr>
+          <tr><td>Recenzije na Google profilu</td><td class="num">3</td><td class="num">10–14</td><td class="num">25–30</td><td class="num">50+</td></tr>
+          <tr><td>Pozivi i rute sa Google profila, mesečno</td><td class="num">ne meri se</td><td class="num">meri se</td><td class="num">25–50</td><td class="num">60–120</td></tr>
+          <tr><td>Upiti sa sajta (obrazac, poziv, WhatsApp)</td><td class="num">~0</td><td class="num">3–8</td><td class="num">10–20</td><td class="num">25–45</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <div class="eyebrow">Šta se neće desiti</div>
+      <p>Sajt neće biti prvi za „prodaja stanova Beograd” ni za tri ni za dvanaest meseci — tamo su agregatori sa desetinama hiljada strana. Takođe, prvih šest do osam nedelja brojevi izgledaju gotovo nepromenjeno: tada se radi na osnovi i objavljuju prve strane, a Google na nove strane u ovoj niši reaguje sa zakašnjenjem od dva do tri meseca. Prvi vidljivi rast je obično u trećem mesecu.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">11</div><h2>Cena i sastav tima</h2></div>
+  <div class="stack">
+    <div class="price">
+      <div class="price-main">
+        <div class="eyebrow">Mesečna pretplata</div>
+        <div class="amount">300 €<small> / mesec</small></div>
+        <p>Ceo tim, bez dodatnih naknada po zadatku. Preporučeni minimalni period je šest meseci — kraće od toga u SEO-u ne daje merljiv rezultat, a prvi mesec odlazi na tehničku osnovu.</p>
+        <div class="team">
+          <div><span>01</span><p>SEO vođa projekta — strategija, prioriteti, mesečni izveštaj i razgovor</p></div>
+          <div><span>02</span><p>Tehnički SEO — preusmerenja, kanonski tagovi, šeme, brzina, slike, WordPress</p></div>
+          <div><span>03</span><p>Autor tekstova na srpskom — strane usluga, lokacije, vodiči</p></div>
+          <div><span>04</span><p>Lokalni SEO — Google profil, recenzije, direktoriji, NAP podaci</p></div>
+          <div><span>05</span><p>Prevod ključnih strana na engleski i ruski (treća faza)</p></div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="hard">
+          <h3>Uključeno u cenu</h3>
+          <ul class="bul">
+            <li>Sve iz plana rada, po fazama</li>
+            <li>Izmene se izvode na sajtu — ne dobijate spisak preporuka da ih sami sprovodite</li>
+            <li>Mesečni izveštaj sa brojevima iz Search Console-a i Google profila i razgovor o njemu</li>
+            <li>Tekstovi i prevodi za planirane strane</li>
+            <li>Vođenje Google profila</li>
+          </ul>
+        </div>
+        <div class="hard">
+          <h3>Nije uključeno</h3>
+          <ul class="bul">
+            <li>Hosting i domen</li>
+            <li>Budžet za Google Ads, ako se za njim bude posegnulo</li>
+            <li>Profesionalno fotografisanje i izrada novih 3D tura</li>
+            <li>Potpuna izrada novog sajta — radi se na postojećem WordPressu i Divi temi, koji su za ovo dovoljni</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">12</div><h2>Šta nam treba od vas</h2></div>
+  <div class="stack">
+    <ul class="bul prose">
+      <li><strong>Pristup WordPressu</strong> sa administratorskim pravima i pristup hostingu i DNS podešavanjima (za preusmerenja i zaglavlja).</li>
+      <li><strong>Pristup Google Business profilu</strong> ili prenos vlasništva — bez toga lokalni deo ne možemo da radimo.</li>
+      <li><strong>Aktuelnu ponudu nekretnina.</strong> Ovo je najvažnija stvar sa vaše strane: bez stvarnih oglasa na sajtu nema šta da se rangira, i nijedna tehnička izmena to ne menja.</li>
+      <li><strong>Dokaz o upisu u Registar posrednika</strong> i podatke o firmi (PIB, matični broj, pun naziv) — za strane poverenja.</li>
+      <li><strong>Prave fotografije</strong> kancelarije i agenata. Fotografije iz 2018. i opšte slike iz foto-banke ne rade za lokalni posao.</li>
+      <li><strong>Dva do tri sata mesečno</strong> za potvrdu tekstova i pitanja o postupku — vi znate kako posao ide, mi to pišemo tako da ga Google razume.</li>
+      <li><strong>Postupak za recenzije:</strong> dogovor da svaki klijent nakon zaključenog posla dobije poruku sa linkom. Ovo radi agent, traje trideset sekundi i najviše donosi.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p>Audit je rađen na osnovu obilaska sajta (Parsi i Screaming Frog, 28. oktobar 2026), javnih podataka sa Google Business profila i pregleda rezultata pretrage za ključne upite. Podaci o tržištu: prosečna cena kvadrata u Beogradu 3.219 €, u prvih šest meseci 2026. prodato 8.538 stanova.</p>
+  <p>Brojevi u tabeli očekivanja su opsezi zasnovani na uporedivim projektima, a ne garancija. Mere se javno dostupnim alatima i proveravaju svakog meseca.</p>
+</footer>
+
+</div>
+</body>
+</html>
